@@ -54,3 +54,39 @@ function filtrarPorCategoria(categoria){
     let filtrados = produtos.filter((produto) => produto.category == categoria);
     carregarProdutos(filtrados)
 }
+  function buscarProdutosPeloTitulo() {
+    const inputBuscarP = document.getElementById("buscarP");
+    const tituloBuscar = inputBuscarP.value.toLowerCase();
+  
+    const produtosFiltrados = produtos.filter((produto) => {
+      return produto.title.toLowerCase().includes(tituloBuscar);
+    });
+  
+    carregarProdutos(produtosFiltrados);
+  }
+  
+  document.getElementById("buscarP").addEventListener("input", buscarProdutosPeloTitulo);
+
+  function organizarProdutosPeloPreco() {
+    const selectFiltros = document.getElementById("filtros");
+    const valorSelecionado = selectFiltros.value;
+  
+    if (valorSelecionado === "menorPreco") {
+      produtos.sort((a, b) => a.price - b.price);
+      carregarProdutos(produtos);
+    }
+  }
+  
+  document.getElementById("filtros").addEventListener("change", organizarProdutosPeloPreco);
+
+  function organizarProdutosPelaAvaliacao() {
+    const selectFiltros = document.getElementById("filtros");
+    const valorSelecionado = selectFiltros.value;
+  
+    if (valorSelecionado === "maiorAvaliacao") {
+      produtos.sort((a, b) => b.rating.rate - a.rating.rate);
+      carregarProdutos(produtos);
+    }
+  }
+  
+  document.getElementById("filtros").addEventListener("change", organizarProdutosPelaAvaliacao);
