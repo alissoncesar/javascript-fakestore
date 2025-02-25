@@ -1,4 +1,5 @@
 let produtos = [];
+let produtosFiltrados = [];
 
 function buscarProdutos(){
     fetch("https://fakestoreapi.com/products")
@@ -53,40 +54,41 @@ function carregarCategorias(listaDeCategorias){
 function filtrarPorCategoria(categoria){
     let filtrados = produtos.filter((produto) => produto.category == categoria);
     carregarProdutos(filtrados)
+    produtosFiltrados = produtos.filter((produto) => produto.category == categoria);
+    carregarProdutos(produtosFiltrados);
 }
   function buscarProdutosPeloTitulo() {
-    const inputBuscarP = document.getElementById("buscarP");
-    const tituloBuscar = inputBuscarP.value.toLowerCase();
+    let inputBuscarP = document.getElementById("buscarP");
+    let tituloBuscar = inputBuscarP.value.toLowerCase();
   
-    const produtosFiltrados = produtos.filter((produto) => {
+    let produtosFiltrados = produtos.filter((produto) => {
       return produto.title.toLowerCase().includes(tituloBuscar);
     });
   
     carregarProdutos(produtosFiltrados);
   }
-  
-  document.getElementById("buscarP").addEventListener("input", buscarProdutosPeloTitulo);
 
   function organizarProdutosPeloPreco() {
-    const selectFiltros = document.getElementById("filtros");
-    const valorSelecionado = selectFiltros.value;
+    let selectFiltros = document.getElementById("filtros");
+    let valorSelecionado = selectFiltros.value;
   
     if (valorSelecionado === "menorPreco") {
+      produtosFiltrados.sort((a, b) => a.price - b.price);
+      carregarProdutos(produtosFiltrados); 
       produtos.sort((a, b) => a.price - b.price);
       carregarProdutos(produtos);
     }
   }
-  
-  document.getElementById("filtros").addEventListener("change", organizarProdutosPeloPreco);
 
-  function organizarProdutosPelaAvaliacao() {
-    const selectFiltros = document.getElementById("filtros");
-    const valorSelecionado = selectFiltros.value;
-  
-    if (valorSelecionado === "maiorAvaliacao") {
-      produtos.sort((a, b) => b.rating.rate - a.rating.rate);
-      carregarProdutos(produtos);
-    }
+
+function organizarProdutosPelaAvaliacao() {
+  let selectFiltros = document.getElementById("filtros");
+  let valorSelecionado = selectFiltros.value;
+
+  if (valorSelecionado === "maiorAvaliacao") {
+    produtosFiltrados.sort((a, b) => b.rating.rate - a.rating.rate);
+    carregarProdutos(produtosFiltrados);
+    produtos.sort((a, b) => b.rating.rate - a.rating.rate);
+    carregarProdutos(produtos);
   }
-  
-  document.getElementById("filtros").addEventListener("change", organizarProdutosPelaAvaliacao);
+}
